@@ -51,6 +51,10 @@ jump_fx = pygame.mixer.Sound('audio/jump.wav')
 shot_fx = pygame.mixer.Sound('audio/shot.wav')
 grenade_fx = pygame.mixer.Sound('audio/grenade.wav')
 
+
+def g_render(color, x, y, width, height, camera):
+    pygame.draw.rect(screen, color, pygame.Rect(int(x-width/2.0-camera.x + WIDTH/2.0), int(y-height/2.0), width, height))
+
 def main():
     
     # define game varibles 
@@ -85,6 +89,7 @@ def main():
             self.color = GREY
             self.friction = 0.9
             self.health = 30
+            self.max_health = 100
             self.alive = True
             self.Fired = False
             self.x_moved = 0
@@ -105,6 +110,8 @@ def main():
             self.animation_list = []
             self.action = 0
             self.update_time = pygame.time.get_ticks()
+            self.stop_go_left = False
+            self.stop_go_right = False
             
             # load all images for the players
             animation_types = ['Idle', 'Run', 'Jump']
@@ -200,20 +207,20 @@ def main():
             if self.alive and player.alive:
 
                 if self.direction == 1:
-                    update_action_for_enemy_group(enemy)
+                    update_action_for_enemy_group()
                     self.x += self.speed
                     self.x_moved += self.speed
                 else:
-                    update_action_for_enemy_group(enemy)
+                    update_action_for_enemy_group()
                     self.x -= self.speed
                     self.x_moved -= self.speed
                     
                 if self.x_moved <= -100:
-                    update_action_for_enemy_group(enemy)
+                    update_action_for_enemy_group()
                     self.direction = 1
                     self.speed = 0
                 elif self.x_moved >= 100:
-                    update_action_for_enemy_group(enemy)
+                    update_action_for_enemy_group()
                     self.direction = 0
                     self.speed = 0
                     
@@ -389,8 +396,9 @@ def main():
             pygame.draw.rect(screen, RED, (self.x, self.y, 115, 20))
             pygame.draw.rect(screen, GREEN, (self.x, self.y, 115 * ratio, 20))
 
-    class Bullet():
+    class Bullet(pygame.sprite.Sprite):
         def __init__(self, x, y, width, height):
+            pygame.sprite.Sprite.__init__(self)
             self.speed = 10
             self.direction = player.direction
             self.bullet_power = 1
@@ -427,11 +435,13 @@ def main():
     for enemy in enemy_group:
         enemy.color = RED
         
-    block = pygame.draw.line(screen, RED, (0, 300), (WIDTH, 300))
+    block = pygame.draw.line(screen, RED, (0, 500), (10000, 30))
+            # g_render(RED, 0, 500, 10000, 30, camera)
+
         
     # for enemy in enemy_group:
         
-    def update_action_for_enemy_group(enemy):
+    def update_action_for_enemy_group():
         # idle
         for num in range(1, 5):
             img = pygame.image.load(f'img/enemy/Idle/{num}.png').convert_alpha()
@@ -462,10 +472,10 @@ def main():
 
     # Create camera object
     camera = Camera(player)
-
+    
+    ##################################################################################
     # Main game loop
     while True:
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -579,19 +589,20 @@ def main():
                                                         player.y += 10
                                                         player.alive = False
         # Check for collisions
-            if pygame.sprite.spritecollide(player, bullet, False):
-                if player.alive:
-                    player.health -= 10
-                    bullet.kill()
-                if player.health < 1:
-                    grenade_fx.play()
-                    player.width = 40
-                    player.height = 20
-                    player.y += 5
-                    player.alive = False
-                    game_over.game_over()
+            # if pygame.sprite.spritecollide(player, [bullet], False):
+                # if player.alive:
+                #     player.health -= 10
+                #     bullet.kill()
+                # if player.health < 1:
+                #     grenade_fx.play()
+                #     player.width = 40
+                #     player.height = 20
+                #     player.y += 5
+                #     player.alive = False
+                #     game_over.game_over()
             for enemy in enemy_group:
-                if pygame.sprite.spritecollide(enemy, bullet, False):
+                continue
+                if pygame.sprite.spritecollide(enemy, [bullet], False):
                     if enemy.alive:
                         enemy.health -= 10
                         bullet.kill()
@@ -646,9 +657,13 @@ def main():
             return
             
         # Render objects
-        bullet.render(camera)
+        # bullet.render(camera)
+        
         #explosion.render(camera)
-        block.render(camera)
+        # block.render(camera)
+        g_render(RED, 0, 500, 10000, 30, camera)
+
+
         for enemy in enemy_group:
             enemy.render(camera)
             
