@@ -127,9 +127,6 @@ def reset_level():
 
 	return data
 
-
-
-
 class Soldier(pygame.sprite.Sprite):
 	def __init__(self, char_type, x, y, scale, speed, ammo, grenades):
 		pygame.sprite.Sprite.__init__(self)

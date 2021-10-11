@@ -1,5 +1,3 @@
-# test git: new changes to 23.py 
-
 import pygame
 import sys
 
@@ -16,7 +14,7 @@ pygame.init()
 
 # Set up the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Buttons in pygame')
+pygame.display.set_caption('Button demo')
 clock = pygame.time.Clock()
 
 class Button:

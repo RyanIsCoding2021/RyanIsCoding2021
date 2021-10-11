@@ -55,7 +55,7 @@ class Laser:
 
 
 class Ship:
-    COOLDOWN = 30
+    COOLDOWN = 0
 
     def __init__(self, x, y, health=100):
         self.x = x
@@ -224,14 +224,15 @@ def main():
             if event.type == pygame.QUIT:
                 quit()
 
-        
+
+        player.shoot()# shoot
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - player_vel > 0: # left
             player.x -= player_vel
         if keys[pygame.K_RIGHT] and player.x + player_vel + player.get_width() < WIDTH: # right
             player.x += player_vel
-        if keys[pygame.K_SPACE]:# shoot
-            player.shoot()
+
 
         for enemy in enemies[:]:
             enemy.move(enemy_vel)

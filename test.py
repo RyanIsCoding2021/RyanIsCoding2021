@@ -1,4 +1,4 @@
-import pygame,sys,random
+import pygame, sys, random
 from pygame.locals import *
 
 clock = pygame.time.Clock()

@@ -1,4 +1,4 @@
-#Python Maze Game
+# Python Maze Game
 
 import turtle
 import math
@@ -6,8 +6,9 @@ import random
 
 w = turtle.Screen()
 w.bgcolor("black")
-w.title("Python Maze Game")
+w.title("Maze Game")
 w.setup(700, 700)
+w.tracer(0)
 
 class Pen(turtle.Turtle):
     def __init__(self):
@@ -261,6 +262,7 @@ def setup_maze(level):
                 
             if character == "e":
                 enemies.append(Enemy(screen_x, screen_y))
+                
     for enemy in enemies:
         turtle.ontimer(enemy.move, t=250)
             
@@ -269,6 +271,8 @@ def clean_maze():
     pen.clearstamps()
     walls.clear()
     enemies.clear()
+    player.clear()
+    treasures.clear()
 
     
 pen = Pen()
@@ -282,9 +286,6 @@ turtle.onkey(player.go_left,"Left")
 turtle.onkey(player.go_right,"Right")
 turtle.onkey(player.go_up,"Up")
 turtle.onkey(player.go_down,"Down")
-
-
-
 
 while True:
     for treasure in treasures:
@@ -303,7 +304,7 @@ while True:
     if len(treasures) == 0:
         level_index += 1
         if level_index >= len(levels):
-            print ("game over")
+            print ("game over!")
             break
         clean_maze()
         setup_maze(levels[level_index])

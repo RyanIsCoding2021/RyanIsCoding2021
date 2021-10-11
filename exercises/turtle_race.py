@@ -162,4 +162,4 @@ goto(-200,-100)
 pendown()
 tree()
 
-time.sleep(100000)
+time.sleep(2000)

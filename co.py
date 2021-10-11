@@ -1,0 +1,4 @@
+WIDTH = 800
+HEIGHT = int(WIDTH * 0.8)
+
+print(HEIGHT)
